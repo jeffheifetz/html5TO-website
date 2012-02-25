@@ -1,0 +1,117 @@
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>HTML5/Web/DOM LStorage Demonstrated</title>
+  <script language="javascript">
+	var myStorage = new LStorage(localStorage);
+	var i = 0;
+
+
+function LStorage (ls) {
+	var myLS = ls,
+ 	    supported = ('localStorage' in window) && window['localStorage'] !== null,
+ 	    numberStored = supported ? localStorage.length : -1;
+	this.__defineGetter__("supported", function() {
+ 		return supported;
+ 	});
+
+ 	this.__defineGetter__("numberStored", function() {
+ 		return numberStored;
+ 	});
+     this.__defineSetter__("numberStored", function(val){
+        numberStored = val;
+    });
+}
+
+ 
+LStorage.prototype.storageClear = function()
+  {
+     localStorage.clear();
+    this.numberStored = localStorage.length;
+}
+  
+LStorage.prototype.setObject = function (key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+    this.numberStored = localStorage.length;
+}
+ 
+LStorage.prototype.getObject = function (key) {
+    return localStorage.getItem(key) && JSON.parse(localStorage.getItem(key));
+}
+
+function Initialize()
+{
+	document.getElementById("dataAll").value = "";
+     document.form1.supported.value = myStorage.supported ? "Yes!" : "No (:";
+     if (myStorage.supported)
+     	document.form1.numStored.value = "count: " + myStorage.numberStored;
+}
+
+function Add()
+{
+	if (document.form1.mydata.value == "")
+		alert ("data cannot be blank or empty");
+
+	var key = "key" + i++;
+	myStorage.setObject(key, document.form1.mydata.value);
+	document.form1.mydata.value = "";
+	document.form1.numStored.value = "Element count: " + myStorage.numberStored;
+}
+
+function Clear()
+{
+	myStorage.storageClear();
+	document.form1.numStored.value = "Element count: " + myStorage.numberStored;
+	document.getElementById("dataAll").value ="";
+}
+
+function DisplayAll()
+{
+	document.getElementById("dataAll").value = "";
+	for (var idx = 0; idx < myStorage.numberStored; idx++){
+		document.getElementById("dataAll").value += myStorage.getObject("key"+idx); 
+		document.getElementById("dataAll").value += "\r\n";
+	}
+}
+
+  </script>
+</head>
+
+<body onload="Initialize()">
+
+  <h1>HTML5 LStorage</h1>
+
+  <form name="form1">
+     <table>
+        <tr>
+           <td>Does this browser support local storage?</td>
+           <td><input type="text" id="supported" name="supported"></td>
+        </tr>
+        <tr>
+           <td>Number of Stored Elements</td>
+           <td><input type="text" id="numStored" name="numStored"></td>
+        </tr>
+     </table>
+     <table>
+        <tr>
+           <td>Enter Data:</td>
+           <td><input type="text" id="mydata" name="mydata"></td>
+        </tr>
+        <tr>
+        	<td colspan = "2">
+        		<textarea id="dataAll" name="dataAll" rows="4" cols="50" align="left" style="text-align:left"></textarea> 
+        	</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              <input type="button" value="Add" onclick="Add();"/>
+              <input type="button" value="Display All" onclick="DisplayAll()"/>
+              <input type="button" value="Clear" onclick="Clear()"/>
+           </td>
+        </tr>
+     </table>
+  </form>
+
+</body>
+</html>
