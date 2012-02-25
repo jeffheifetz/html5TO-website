@@ -1,0 +1,51 @@
+<!DOCTYPE>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(function($){ 
+      var id = getParameterByName('id');
+      console.log(id);
+      if(id == null || id ==0) return;
+      
+      var shortName = 'TestDB';
+      var version = '1.0';
+      var displayName = 'TestDB';
+      var maxSize = 100000;
+      TestDB = openDatabase(shortName, version, displayName, maxSize);
+      restoreTo(id);
+      
+             // console.log(theCode);
+      var s = 'script';
+      
+      function restoreTo(id){
+              //console.log(theCode);
+          TestDB.transaction(function (transaction) {
+            transaction.executeSql("SELECT code FROM codeFarm where id = ?;", [id], function(transaction, results){
+              var row = results.rows.item(0);
+              theCode = row.code;
+              $('body').append('<'+s+'>(function(){'+ theCode+'})();</'+s+'>');
+            });
+          });
+      }
+      
+      
+      function getParameterByName( name ) {
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( regexS );
+        var results = regex.exec( window.location.href );
+        if( results == null ){
+          return "";
+        }else{
+          return decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+      }
+    });
+  </script>
+</head>
+
+<body>
+		<canvas id="myCanvas" height="600" width="600"></canvas>
+</body>
+</html>
