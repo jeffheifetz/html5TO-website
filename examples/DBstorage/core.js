@@ -1,4 +1,4 @@
-$(function(){ 
+$(function($){ 
   var TestDB;
   var currentID=0;
   initDatabase();
@@ -8,8 +8,13 @@ $(function(){
  	// Button and link actions
 	$('#btnSave').click(function(){ saveCurrent(); return false;});
 	$('#btnDel').click(function(){ delCurrent(); return false;});
+	$('#btnRun').click(function(){ runCode(currentID); return false;});
  	$('#restore').change(function(){restoreTo($(this).find('option:selected').val()); });
 
+  
+  function runCode(id){
+      $('#canvasFrame').attr('src', function ( i, val ) { return 'iframe.html?id='+currentID; });
+  }
   
   function initDatabase() {
     try {
