@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<script type="text/javascript">
+		window.onload = function() {
+			var c=document.getElementById("myCanvas");
+			var ctx=c.getContext("2d");
+			ctx.fillStyle="#FF0000";
+			ctx.fillRect(0,0,75,75);
+			for(i=0;i<1000;i++) {
+				addBox();
+			}
+		}
+		
+		function addBox()
+		{	
+			var height=Math.floor(Math.random()*100);
+			var width=Math.floor(Math.random()*100);
+			var left=Math.floor(Math.random()*(600-width));
+			var top=Math.floor(Math.random()*(600-height));
+			
+			var c=document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			ctx.fillStyle=get_random_color();
+			ctx.fillRect(left,top,width,height);
+		}
+		
+		function get_random_color() {
+		    var letters = '0123456789ABCDEF'.split('');
+		    var color = '#';
+		    for (var i = 0; i < 6; i++ ) {
+		        color += letters[Math.round(Math.random() * 15)];
+		    }
+		    return color;
+		}
+		</script>
+	</head>
+	<body>
+		<canvas id="myCanvas" height="600" width="600"></canvas>
+	</body>
+</html>
