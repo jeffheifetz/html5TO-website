@@ -1,0 +1,247 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>HTML5 Canvas localStorage</title>
+
+
+</head>
+
+<body>
+
+<a name="top"></a>
+
+<div id="container">
+
+
+   
+<p>
+ 
+  <style type="text/css">
+
+.drawbroad
+
+{
+
+-webkit-border-radius: 5px;
+
+-moz-border-radius: 5px;
+
+border-radius: 5px;
+
+border: 1px solid #ccc;
+
+}
+
+  </style>
+</p>
+<canvas id="drawbroad" width="500" height="600" class="drawbroad"></canvas>
+
+<div id="pointInfo"></div>
+
+<div> <input id="btnSaveToImage" value="Save Image" type="button" /></div>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<script> 
+
+             var canvas = document.getElementById("drawbroad"); 
+
+             canvas.addEventListener("mousemove", onMouseMove, false); 
+
+             canvas.addEventListener("mousedown", onMouseDown, false); 
+
+             canvas.addEventListener("mouseup", onMouseUp, false); 
+
+              var btnSave=document.getElementById("btnSaveToImage");
+
+             btnSave.addEventListener("click",function(evt){
+
+//alert("d");
+
+Canvas2Image.saveAsPNG(canvas); 
+
+             },false)
+
+             var info = document.getElementById("pointInfo");
+
+             var context = canvas.getContext("2d"); 
+
+
+             var linePoint=[];
+
+
+             var isMouseDown=0; 
+
+
+              window.addEventListener('storage', function(evt) { 
+
+console.log('The value for ' + evt.key + ' was changed from' + evt.oldValue + ' to ' + evt.newValue);
+
+if(evt.key=="pointInfo")
+
+{
+
+
+var strPointInfo=evt.newValue.split(";");
+
+
+               context.save();
+
+
+
+               context.lineWidth=4;
+
+
+
+               context.strokeStyle="#808080";
+
+
+
+               context.beginPath(); 
+
+               
+for(var i=0;i<strPointInfo.length;i++)
+
+               {
+
+var tempPoint=strPointInfo[i].split(",");
+
+if(i==0)
+
+{
+
+
+
+context.moveTo(tempPoint[0],tempPoint[1]);
+
+}
+
+else{
+
+ 
+
+context.lineTo(tempPoint[0],tempPoint[1]); 
+
+
+
+context.stroke();
+
+                    } 
+
+                   }
+
+                    //context.restore();
+
+                    context.closePath();
+
+}
+
+              }, false);
+
+             function onMouseMove(evt) {
+
+if(isMouseDown==1)
+
+{
+
+
+linePoint.push({x:evt.layerX,y:evt.layerY});
+
+
+
+                    context.lineTo(evt.layerX,evt.layerY); 
+
+
+                    context.stroke();
+
+
+} 
+
+              info.innerHTML="X:"+evt.layerX +" Y:"+evt.layerY;
+
+             } 
+
+             function onMouseDown(evt) { 
+
+linePoint=[]; 
+
+
+               isMouseDown=1;
+
+
+               linePoint.push({x:evt.layerX,y:evt.layerY}); 
+
+
+
+               context.save();
+
+
+
+               context.lineWidth=4;
+
+
+
+               context.strokeStyle="#808080";
+
+
+               context.moveTo(evt.layerX,evt.layerY); 
+
+
+               context.beginPath(); 
+
+             } 
+
+             function onMouseUp(evt) { 
+
+
+                isMouseDown = 0; 
+
+
+                linePoint.push({x:evt.layerX,y:evt.layerY});
+
+
+                context.lineTo(evt.layerX,evt.layerY); 
+
+
+                context.stroke(); 
+
+
+
+var strPointData=""
+
+for(var i=0;i<linePoint.length;i++)
+
+{
+
+strPointData+=linePoint[i].x+","+linePoint[i].y+";";
+
+}
+
+strPointData=strPointData.substring(0,strPointData.length-1)
+
+                localStorage.setItem('pointInfo',strPointData);
+
+context.closePath();
+
+             } 
+
+</script>
+
+</div>
+
+</form> 
+
+</body>
+</html>
+
