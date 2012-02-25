@@ -1,0 +1,72 @@
+<section>
+    <article>
+        <header>
+            <h1> Web Storage </h1>
+        </header>
+        Web Storage is SUPER AWESOME
+        <h2> Things you should know </h2>
+        <h3> How to detect WebStorage </h3>
+        <p> Here is some example code to detect if you have LocalStorage support </p>
+        <code><pre>
+function checkLocalStoreageSupport () {
+    if (localStorage) {
+        return "Local Storage: Supported";
+    } else {
+        return "Local Storage: Unsupported";  
+    }
+}
+        </pre></code>
+        
+        <h3> Setting and getting values from WebStorage </h3>
+        <p> Here is some example code to set and get values from Local Storage. Values can be any string INCLUDING JSON!!! </p>
+        <code><pre>
+//Set the value of a key
+localStorage.lastname="Smith";
+localStorage["lastname"] ="Smith";
+localStorage.setItem("lastname", "Smith");
+
+//Get the value of a key
+var lastname = localStorage.lastname;
+var lastname = localStorage["lastname"]
+var lastname = localStorage.getItem("lastname")
+
+//Storing an object
+localStorage.setItem('user', JSON.stringify({user: 'john', id: 10}));
+var user = JSON.parse(localStorage.getItem('user'));
+        </pre></code>
+        
+        <h3> WebStorage vs other offline storage </h3>
+        <p> WebStorage is a simple key value store in the browser which is supported across all new browsers. For a more powerful database, Web SQL is used which is an implementation of sqlite right in the browser, however cannot be used with Firefox and Internet explorer. Chrome, Firefox and Internet Explorer also support IndexedDB, another local storage database. </p>
+
+        <h3> Using LocalStorage with older browser or multiplatform</h3>
+        <p> One approach is to use a polyfill library to backport the localStorage interface. One example would be <a href="https://github.com/marcuswestin/store.js"> Store.js </a> </p>
+        <p> Another approach would be to use a multiplatform library that has a new interface on top of multiple sotrage platforms. Some examples could be: </p>
+        <ul>
+            <li> <a href="http://westcoastlogic.com/lawnchair/">Lawnchair</a> </li>
+            <li> <a href="http://persistencejs.org/">Persistence.js</a> </li>
+            <li> <a href="http://documentcloud.github.com/backbone/">BackBone</a> </li>
+        </ul>
+        </article>
+
+        <h3> Resources </h3>
+        <ul>
+            <li> http://www.html5rocks.com/en/features/storage </li>
+            <li> http://www.w3schools.com/html5/html5_webstorage.asp </li>
+            <li> http://msdn.microsoft.com/en-us/library/cc197062(v=vs.85).aspx </li>
+            <li> https://bdsc.webapps.blackberry.com/html5/apis/localStorage.html </li>
+        </ul>
+
+        <h3> Examples </h3>
+        <ul>
+            <li> http://blog.darkcrimson.com/2010/05/local-databases/ </li>
+            <li> http://coding.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/ </li>
+            <li> http://192.168.1.147:81/test/ </li>
+        </ul>
+        
+
+        <footer>
+            Written by the awesomest team at the hackathon - John Xu, Ben Huang, Luis Mediana, Ibrahim Muhammad, Terry Lin, Rick Seeenarine, Jeffrey Heifetz
+        </footer>
+
+</section>
+
