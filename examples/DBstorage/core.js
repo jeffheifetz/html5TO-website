@@ -13,7 +13,8 @@ $(function($){
 
   
   function runCode(id){
-      $('#canvasFrame').attr('src', function ( i, val ) { return 'iframe.html?id='+currentID; });
+      //$('#canvasFrame').attr('src', function ( i, val ) { return 'iframe.html?id='+currentID; });
+      window.open('iframe.html?id='+currentID, "Run","status=0,toolbar=0,width=600px,height=600px");
   }
   
   function initDatabase() {
@@ -103,22 +104,24 @@ $(function($){
           
           console.log('about to save to:'+currentID+' with '+code);
           if(currentID==0){
-            var newid=1;
-            transaction.executeSql("SELECT MAX(*) as idcount FROM codeFarm;", [], function(transaction, results){
-              var row = results.rows.item(0);
-              if(row!=null){
-                newid = parseInt(row.idcount)+1;
-                console.log("id:"+newid+', count:'+row.idcount);
-              }else{
-                console.log("query crash.");
-                return false;
+            var newid=0;
+            transaction.executeSql("SELECT id FROM codeFarm;", [], function(transaction, results){
+              for (var i=0; i<results.rows.length; i++) {
+                var row = results.rows.item(i);
+                console.log(row.id);
+                if(parseInt(row.id)>=newid){
+                  newid = parseInt(row.id);
+                }
               }
-                
+              newid = newid+1;
+
               transaction.executeSql("INSERT INTO codeFarm(id, code) VALUES (?, ?)", [newid,code]);
               currentID = newid;
               updateRestore();
             }, function(){
-                console.log("query count errot.");
+                transaction.executeSql("INSERT INTO codeFarm(id, code) VALUES (?, ?)", [newid,code]);
+                currentID = newid;
+                updateRestore();
             });
                       
           }else{                      
